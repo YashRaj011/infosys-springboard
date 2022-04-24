@@ -1,0 +1,35 @@
+User Importer
+
+Pre requisite
+1. Environment Specific values should come from env variables (Check sutitable Python Lib)
+2. Should support running in debug mode using arguments (Check suitable Lib to process arguments in a better way)
+
+Design Requirement
+1. Tenant Specific file to table mapping
+2. Tenant Specific pre and post processing should be possible
+
+Final Flow
+1. Read file data
+2. Read DB records for tenant
+2. Process records (one by one)
+3. Tenant specific pre processing
+4. Tenant specific mapping
+5. Tenant specific post processing
+6. Identify records to be inserted, updated, disabled
+7. Process operation on DB
+8. Generate additional file if needed by the tenant
+
+Requirement1
+1. Read file data
+2. Read DB records for tenant
+3. Tenant specific mapping
+4. Tenant specific post processing (if needed)
+5. Identify records to be inserted, updated, disabled (Email is Key [For Infosys])
+	a. If file record is not in DB, then Insert
+	b. If file records is present in DB and different from file records (Based on tenant mapping) then Update
+	c. If by tenant logic it is to be disabled and in DB it is not yet disabled, then disable
+		i. For Infosys, if is_active is false it is to be disabled
+		ii. To disable update is_active = false, poplulate account_expiry_date as current data in YYYY-MM-DD format and in json_unmapped_fields.disable_reason put a standard reason like "Account is deactivated in file data"
+6. Process operation on DB
+
+
